@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Alam - Portfolio 2026</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700;800&family=Syne:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      width: 100%;
+      background-color: #000000;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fixed Canvas background animation */
+    #animationCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Background overlay vignette */
+    .bg-vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.7) 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+      pointer-events: none;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .progress-bar-wrap {
+      width: clamp(160px, 40vw, 240px);
+      height: 3px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #d62828;
+      transition: width 0.1s linear;
+    }
+
+    /* Logo Fixed Top Left */
+    .logo-fixed {
+      position: fixed;
+      top: 24px;
+      left: 28px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: rgba(10, 10, 16, 0.75);
+      backdrop-filter: blur(12px);
+      padding: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .logo-fixed:hover {
+      transform: scale(1.08);
+      background: rgba(20, 20, 30, 0.95);
+      border-color: rgba(214, 40, 40, 0.8);
+      box-shadow: 0 0 20px rgba(214, 40, 40, 0.4);
+    }
+
+    .logo-fixed img {
+      width: clamp(32px, 5vw, 42px);
+      height: clamp(32px, 5vw, 42px);
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+    }
+
+
+
+    /* Scrollable Container covering 4 Sections */
+    .scroll-container {
+      position: relative;
+      z-index: 10;
+    }
+
+    .section {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: clamp(60px, 10vh, 100px) clamp(16px, 4vw, 40px);
+      position: relative;
+    }
+
+    /* Glassmorphic Panel Style */
+    .glass-panel {
+      background: rgba(10, 10, 16, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: clamp(16px, 3vw, 24px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      width: 100%;
+      max-width: 1100px;
+      padding: clamp(20px, 4vw, 40px);
+    }
+
+    /* Section 1: Hero */
+    #hero {
+      justify-content: center;
+    }
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: clamp(24px, 5vw, 48px);
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .hero-avatar-pill {
+      background: #900c1e;
+      border-radius: 120px 120px 40px 120px;
+      padding: clamp(8px, 1.5vw, 14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 15px 35px rgba(144, 12, 30, 0.5);
+      flex-shrink: 0;
+    }
+
+    .hero-avatar-pill img {
+      width: clamp(140px, 35vw, 200px);
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 90px 90px 25px 90px;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 9vw, 5.5rem);
+      letter-spacing: 2px;
+      line-height: 0.95;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, #b0b0c0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .hero-title span {
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      color: #9090a0;
+      -webkit-text-fill-color: initial;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: clamp(0.75rem, 2vw, 0.85rem);
+      letter-spacing: 2px;
+      font-weight: 600;
+      width: fit-content;
+      margin-top: 4px;
+    }
+
+    .hero-badge-square {
+      width: 8px;
+      height: 8px;
+      background: #ffffff;
+    }
+
+    /* Hide default cursor on desktop when custom cursor is active */
+    @media (pointer: fine) {
+
+      body,
+      a,
+      button,
+      input,
+      [role="button"] {
+        cursor: none !important;
+      }
+    }
+
+    /* Smooth Custom Cursor Elements */
+    .custom-cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+
+    .custom-cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s ease, height 0.25s ease, background 0.25s ease, border-color 0.25s ease, opacity 0.3s ease, box-shadow 0.25s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .custom-cursor-ring.hovered {
+      width: 56px;
+      height: 56px;
+      background: rgba(214, 40, 40, 0.25);
+      border-color: rgba(214, 40, 40, 0.8);
+      box-shadow: 0 0 20px rgba(214, 40, 40, 0.4);
+    }
+
+    .hero-menu {
+      display: flex;
+      gap: 14px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .hero-menu a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: clamp(0.75rem, 2vw, 0.85rem);
+      letter-spacing: 3px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-menu a:hover {
+      color: #ffffff;
+      background: #d62828;
+      border-color: #d62828;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(214, 40, 40, 0.4);
+    }
+
+    /* Top Nav Pills */
+    .nav-pills {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .nav-pill {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: clamp(0.65rem, 1.8vw, 0.75rem);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+      color: #808090;
+      background: rgba(20, 20, 30, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .nav-pill.active {
+      background: #2b70e4;
+      color: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Section 2: Profile & About Me */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: clamp(20px, 4vw, 40px);
+      align-items: start;
+    }
+
+    .profile-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .profile-left-tag {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: #9090a0;
+      margin-bottom: 4px;
+    }
+
+    .profile-name {
+      font-family: 'Bebas Neue', 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 5.5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 16px;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .profile-image-frame {
+      width: clamp(180px, 45vw, 240px);
+      aspect-ratio: 3 / 4;
+      height: auto;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
+    }
+
+    .profile-image-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .profile-right {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .section-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      letter-spacing: 1px;
+      color: #ffffff;
+    }
+
+    .about-text {
+      font-size: clamp(0.75rem, 1.8vw, 0.82rem);
+      line-height: 1.6;
+      color: #b0b0c0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .skills-header {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.3rem, 3vw, 1.6rem);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .skills-icons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .skill-badge {
+      width: clamp(38px, 6vw, 44px);
+      height: clamp(38px, 6vw, 44px);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: clamp(0.8rem, 2vw, 0.95rem);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .skill-badge:hover {
+      transform: translateY(-3px);
+    }
+
+    .skill-pr {
+      background: #00005b;
+      color: #9999ff;
+      border: 1px solid #3333cc;
+    }
+
+    .skill-ae {
+      background: #1a0033;
+      color: #d980ff;
+      border: 1px solid #8800cc;
+    }
+
+    .skill-ps {
+      background: #001e36;
+      color: #31a8ff;
+      border: 1px solid #00509d;
+    }
+
+    .skill-ai {
+      background: #331400;
+      color: #ff7700;
+      border: 1px solid #cc5500;
+    }
+
+    .skill-cd {
+      background: #002611;
+      color: #00e66b;
+      border: 1px solid #009947;
+    }
+
+    .skill-id {
+      background: #33001b;
+      color: #ff3399;
+      border: 1px solid #cc0066;
+    }
+
+    .skill-pp {
+      background: #331000;
+      color: #ff5500;
+      border: 1px solid #cc3300;
+    }
+
+    .skill-ms {
+      background: #001a33;
+      color: #3399ff;
+      border: 1px solid #0066cc;
+    }
+
+    .skill-genai {
+      background: linear-gradient(135deg, #2a004a, #5b0080);
+      color: #e066ff;
+      border: 1px solid #9933ff;
+    }
+
+    .skill-fg {
+      background: #1e1e1e;
+      color: #a259ff;
+      border: 1px solid #555566;
+    }
+
+    .info-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .info-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .info-box-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #e0e0f0;
+      margin-bottom: 6px;
+    }
+
+    .info-box-desc {
+      font-size: 0.72rem;
+      color: #9090a0;
+      line-height: 1.4;
+    }
+
+    .language-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lang-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: #b0b0c0;
+      letter-spacing: 1px;
+    }
+
+    /* Section 3: Project Recap */
+    .recap-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .recap-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 3rem);
+      letter-spacing: 2px;
+    }
+
+    .recap-tag {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: #9090a0;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+    }
+
+    .project-card {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(15, 15, 25, 0.8);
+      aspect-ratio: 3 / 4;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .project-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: scale 0.5s ease;
+    }
+
+    .project-card:hover img {
+      scale: 1.05;
+    }
+
+    .project-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, transparent 65%);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .project-card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(0.8rem, 2vw, 0.95rem);
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .project-card-sub {
+      font-size: 0.68rem;
+      color: #a0a0b0;
+    }
+
+    /* Section 4: Contact & Thank You */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(24px, 5vw, 40px);
+      align-items: center;
+      width: 100%;
+    }
+
+    .contact-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-avatar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .contact-avatar {
+      width: clamp(60px, 12vw, 80px);
+      height: clamp(60px, 12vw, 80px);
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .contact-avatar-info h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      font-weight: 700;
+    }
+
+    .contact-avatar-info p {
+      font-size: 0.75rem;
+      color: #808090;
+    }
+
+    .social-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .social-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #ffffff;
+      font-size: clamp(0.75rem, 2vw, 0.85rem);
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .social-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .social-icon {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      font-size: 0.75rem;
+    }
+
+    .history-cards {
+      display: flex;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .history-card {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.7rem;
+      color: #a0a0b0;
+      text-align: center;
+    }
+
+    .contact-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .thankyou-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 6rem);
+      line-height: 0.9;
+      letter-spacing: 2px;
+      background: linear-gradient(180deg, #ffffff 0%, #707080 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .thankyou-sub {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      color: #ffffff;
+      margin-top: 4px;
+    }
+
+    /* Services & Pricing Section Styles */
+    .services-intro {
+      font-size: clamp(0.82rem, 1.8vw, 0.92rem);
+      color: #b0b0c0;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(20px, 4vw, 36px);
+      align-items: start;
+      width: 100%;
+    }
+
+    .services-list-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      color: #ffffff;
+    }
+
+    .services-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .service-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #e0e0f0;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .service-chip:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .pricing-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+
+    .pricing-card.premium {
+      background: rgba(144, 12, 30, 0.28);
+      border-color: rgba(214, 40, 40, 0.5);
+      box-shadow: 0 10px 30px rgba(144, 12, 30, 0.3);
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #d62828;
+      color: #ffffff;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .pricing-header h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .pricing-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .pricing-desc {
+      font-size: 0.72rem;
+      color: #a0a0b0;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: #d0d0e0;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pricing-features li::before {
+      content: "✓";
+      color: #3b82f6;
+      font-weight: 800;
+    }
+
+    .pricing-card.premium .pricing-features li::before {
+      color: #ff3344;
+    }
+
+    /* RESPONSIVE MEDIA QUERIES */
+
+    @media (max-width: 1024px) {
+      .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-content {
+        gap: 32px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .services-list-title,
+      .services-intro {
+        text-align: center;
+      }
+
+      .services-chips {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .logo-fixed {
+        top: 16px;
+        left: 16px;
+      }
+
+      .section {
+        padding: 70px 16px 40px 16px;
+      }
+
+      .hero-content {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+
+      .hero-text {
+        align-items: center;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: clamp(2.2rem, 7.5vw, 3.8rem);
+        justify-content: center;
+        text-align: center;
+      }
+
+      .hero-badges {
+        justify-content: center;
+      }
+
+      .hero-badge {
+        margin: 4px auto 0 auto;
+      }
+
+      .hero-menu {
+        justify-content: center;
+      }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .profile-left {
+        margin-bottom: 8px;
+      }
+
+      .info-two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .contact-right {
+        align-items: center;
+        text-align: center;
+        width: 100%;
+      }
+
+      .thankyou-title {
+        font-size: clamp(2.8rem, 9vw, 4.8rem);
+        text-align: center;
+      }
+
+      .thankyou-sub {
+        font-size: clamp(2.2rem, 7vw, 3.5rem);
+        text-align: center;
+      }
+
+      .section-heading,
+      .recap-title {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .pricing-cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: clamp(1.75rem, 6.5vw, 2.5rem);
+        justify-content: center;
+        text-align: center;
+      }
+
+      .hero-badges {
+        justify-content: center;
+      }
+
+      .thankyou-title {
+        font-size: clamp(2.2rem, 8vw, 3.5rem);
+        text-align: center;
+      }
+
+      .glass-panel {
+        padding: 18px 14px;
+      }
+
+      .nav-pills {
+        gap: 6px;
+      }
+
+      .nav-pill {
+        padding: 6px 12px;
+        font-size: 0.62rem;
+      }
+
+      .history-cards {
+        flex-direction: column;
+      }
+
+      .service-chip {
+        padding: 6px 10px;
+        font-size: 0.72rem;
+      }
+
+      .pricing-card {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Smooth Custom Cursor Elements -->
+  <div class="custom-cursor-dot" id="cursorDot"></div>
+  <div class="custom-cursor-ring" id="cursorRing"></div>
+
+  <!-- Canvas Background Animation -->
+  <canvas id="animationCanvas"></canvas>
+  <div class="bg-vignette"></div>
+
+  <!-- Loading Bar -->
+  <div class="loader" id="loader">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+  <!-- Logo fixed top left -->
+  <div class="logo-fixed" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Md Tamanne Alam">
+    <img src="assets/logo_white.png" alt="TD Logo">
+  </div>
+
+  <!-- Content Container with 4 Sections -->
+  <div class="scroll-container">
+
+    <!-- Section 1: Hero Cover -->
+    <section class="section" id="hero">
+      <div class="hero-content">
+        <div class="hero-avatar-pill">
+          <img src="assets/avatar.png" alt="Md Tamanne Alam">
+        </div>
+        <div class="hero-text">
+          <h1 class="hero-title">GRAPHIC DESIGNER <span>PORTFOLIO 2026</span></h1>
+          <div class="hero-badges" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="hero-badge">
+              <div class="hero-badge-square"></div>
+              GRAPHIC DESIGNER
+            </div>
+            <div class="hero-badge">
+              <div class="hero-badge-square"></div>
+              VIDEO EDITOR
+            </div>
+          </div>
+          <div class="hero-menu">
+            <a href="#profil">START</a>
+            <a href="#project">OPTIONS</a>
+            <a href="#contact">EXIT</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Profile & About Me -->
+    <section class="section" id="profil">
+      <div class="nav-pills">
+        <a href="#profil" class="nav-pill active">PROFIL</a>
+        <a href="#project" class="nav-pill">PROJECT</a>
+        <a href="#services" class="nav-pill">SERVICES</a>
+        <a href="#contact" class="nav-pill">CONTACT PERSON</a>
+      </div>
+
+      <div class="glass-panel">
+        <div class="profile-grid">
+
+          <div class="profile-left">
+            <span class="profile-left-tag">HELLO, I AM</span>
+            <h3 class="profile-name">MD TAMANNE ALAM</h3>
+            <div class="profile-image-frame">
+              <img src="assets/avatar.png" alt="Md Tamanne Alam">
+            </div>
+          </div>
+
+          <div class="profile-right">
+            <h2 class="section-heading">ABOUT ME</h2>
+            <p class="about-text">
+              HI, I'M MD TAMANNE ALAM. I HAVE 3 YEARS OF EXPERIENCE IN THE GRAPHIC DESIGN FIELD. I LEARNED A LOT OF
+              THINGS FROM EDITING, GRAPHIC DESIGN, VIDEO, TYPOGRAPHY, BRANDING, AND VISUAL CREATIVE DESIGN.
+            </p>
+
+            <div>
+              <h3 class="skills-header">SOFTWARE SKILLS</h3>
+              <div class="skills-icons">
+                <div class="skill-badge skill-ps" title="Adobe Photoshop">Ps</div>
+                <div class="skill-badge skill-ai" title="Adobe Illustrator">Ai</div>
+                <div class="skill-badge skill-cd" title="CorelDRAW">Cd</div>
+                <div class="skill-badge skill-id" title="Adobe InDesign">Id</div>
+                <div class="skill-badge skill-pp" title="MS PPT">Pp</div>
+                <div class="skill-badge skill-fg" title="Figma">Fg</div>
+              </div>
+            </div>
+
+            <div class="info-two-col">
+              <div class="info-box">
+                <div class="info-box-title">EDUCATION</div>
+                <div class="info-box-desc">
+                  ● 2020 - 2023<br>
+                  - GRAPHIC DESIGN & FINE ARTS<br>
+                  Visual Communication Science
+                </div>
+              </div>
+
+              <div class="info-box">
+                <div class="info-box-title">EXPERIENCE</div>
+                <div class="info-box-desc">
+                  GRAPHIC DESIGNER (3+ YEARS)<br>
+                  Brand Identity, Posters, Video Editing<br>
+                  Creative Content & Typography
+                </div>
+              </div>
+            </div>
+
+            <div class="language-section">
+              <div class="info-box-title">LANGUAGE (COMMUNICATION)</div>
+              <div class="lang-item">
+                <span>HINDI</span>
+                <span>100%</span>
+              </div>
+              <div class="lang-item">
+                <span>ENGLISH</span>
+                <span>85%</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Recap Project 2026 -->
+    <section class="section" id="project">
+      <div class="nav-pills">
+        <a href="#profil" class="nav-pill">PROFIL</a>
+        <a href="#project" class="nav-pill active">PROJECT</a>
+        <a href="#services" class="nav-pill">SERVICES</a>
+        <a href="#contact" class="nav-pill">CONTACT PERSON</a>
+      </div>
+
+      <div class="glass-panel">
+        <div class="recap-header">
+          <h2 class="recap-title">RECAP PROJECT 2026</h2>
+          <span class="recap-tag">NO AI</span>
+        </div>
+
+        <div class="project-grid">
+          <div class="project-card">
+            <img src="assets/poster1.png" alt="Creative Graphic Poster">
+            <div class="project-card-overlay">
+              <div class="project-card-title">Graphic Poster Design</div>
+              <div class="project-card-sub">Typography & Editing</div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <img src="assets/poster2.png" alt="Venom Edit Poster">
+            <div class="project-card-overlay">
+              <div class="project-card-title">Venom Movie Edit</div>
+              <div class="project-card-sub">Cinematic Title Art</div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <img src="assets/poster3.png" alt="Illustration Poster">
+            <div class="project-card-overlay">
+              <div class="project-card-title">Character Illustration</div>
+              <div class="project-card-sub">Visual Art</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Freelance Services & Pricing -->
+    <section class="section" id="services">
+      <div class="nav-pills">
+        <a href="#profil" class="nav-pill">PROFIL</a>
+        <a href="#project" class="nav-pill">PROJECT</a>
+        <a href="#services" class="nav-pill active">SERVICES</a>
+        <a href="#contact" class="nav-pill">CONTACT PERSON</a>
+      </div>
+
+      <div class="glass-panel">
+        <div class="recap-header">
+          <h2 class="recap-title">FREELANCE SERVICES</h2>
+          <span class="recap-tag">CREATIVE GRAPHIC DESIGN</span>
+        </div>
+
+        <p class="services-intro">
+          Helping brands and businesses create clean, modern, and impactful designs that leave a lasting impression.
+        </p>
+
+        <div class="services-grid">
+          <div>
+            <h3 class="services-list-title">SERVICES OFFERED</h3>
+            <div class="services-chips">
+              <div class="service-chip">Brand Identity</div>
+              <div class="service-chip">Logo Design</div>
+              <div class="service-chip">Social Media Graphics</div>
+              <div class="service-chip">Packaging Design</div>
+              <div class="service-chip">Banner & Poster</div>
+              <div class="service-chip">Flyer & Brochure</div>
+              <div class="service-chip">Business Cards</div>
+              <div class="service-chip">Presentation Design</div>
+              <div class="service-chip">Print Design</div>
+              <div class="service-chip">Photo Retouching</div>
+              <div class="service-chip">Photo Collage</div>
+              <div class="service-chip">AI to Print Ready File</div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="services-list-title">PRICING PLANS</h3>
+            <div class="pricing-cards">
+              <div class="pricing-card">
+                <div class="pricing-header">
+                  <h4>STANDARD</h4>
+                  <div class="pricing-price">STARTING AT $25</div>
+                </div>
+                <p class="pricing-desc">Perfect for startups and small businesses.</p>
+                <ul class="pricing-features">
+                  <li>1 Custom Design</li>
+                  <li>High-Resolution Files</li>
+                  <li>2 Revisions</li>
+                  <li>Commercial Use</li>
+                  <li>3–4 Day Delivery</li>
+                </ul>
+              </div>
+
+              <div class="pricing-card premium">
+                <div class="pricing-badge">POPULAR</div>
+                <div class="pricing-header">
+                  <h4>PREMIUM</h4>
+                  <div class="pricing-price">STARTING AT $75</div>
+                </div>
+                <p class="pricing-desc">Best for brands needing premium design support.</p>
+                <ul class="pricing-features">
+                  <li>Up to 3 Custom Designs</li>
+                  <li>Source Files (AI/PSD)</li>
+                  <li>Unlimited Revisions</li>
+                  <li>Priority Support</li>
+                  <li>Commercial Use</li>
+                  <li>48–60 Hour Delivery</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Contact Person & Outro -->
+    <section class="section" id="contact">
+      <div class="nav-pills">
+        <a href="#profil" class="nav-pill">PROFIL</a>
+        <a href="#project" class="nav-pill">PROJECT</a>
+        <a href="#services" class="nav-pill">SERVICES</a>
+        <a href="#contact" class="nav-pill active">CONTACT PERSON</a>
+      </div>
+
+      <div class="glass-panel">
+        <div class="contact-grid">
+
+          <div class="contact-left">
+            <h2 class="section-heading">CONTACT ME</h2>
+
+            <div class="contact-avatar-wrap">
+              <img src="assets/avatar.png" alt="Md Tamanne Alam" class="contact-avatar">
+              <div class="contact-avatar-info">
+                <h4>MD TAMANNE ALAM</h4>
+                <p>23 Y.O</p>
+              </div>
+            </div>
+
+            <div class="social-list">
+              <a href="tel:+918207533522" class="social-item">
+                <span class="social-icon">📞</span>
+                <span>+91 8207533522</span>
+              </a>
+              <a href="mailto:mdtamannealam@gmail.com" class="social-item">
+                <span class="social-icon">✉️</span>
+                <span>mdtamannealam@gmail.com</span>
+              </a>
+              <a href="https://www.instagram.com/coding_td?igsh=a3RhdzhzMzFkOHgx" target="_blank"
+                rel="noopener noreferrer" class="social-item">
+                <span class="social-icon">📷</span>
+                <span>@coding_td (Instagram)</span>
+              </a>
+              <a href="https://www.linkedin.com/in/mdtamannealam" target="_blank" rel="noopener noreferrer"
+                class="social-item">
+                <span class="social-icon">💼</span>
+                <span>Md Tamanne Alam (LinkedIn)</span>
+              </a>
+            </div>
+
+            <div class="history-cards">
+              <div class="history-card">PORTOFOLIO 2023</div>
+              <div class="history-card">DESIGN PORTFOLIO 2024</div>
+            </div>
+          </div>
+
+          <div class="contact-right">
+            <h1 class="thankyou-title">THANK YOU</h1>
+            <h2 class="thankyou-sub">FOR YOUR VISIT!</h2>
+          </div>
+
+        </div>
+
+        <!-- Footer / Copyright Notice -->
+        <div
+          style="margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; font-size: 0.78rem; color: #808090; letter-spacing: 1.5px; text-transform: uppercase;">
+          © 2026 <strong style="color: #ffffff;">MD TAMANNE ALAM</strong>. ALL RIGHTS RESERVED.
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Background Frame Animation Script -->
+  <script>
+    const FRAME_COUNT = 240;
+    const canvas = document.getElementById('animationCanvas');
+    const ctx = canvas.getContext('2d');
+    const loader = document.getElementById('loader');
+    const progressBar = document.getElementById('progressBar');
+
+    const images = [];
+    let loadedImagesCount = 0;
+
+    function currentFrameUrl(index) {
+      const paddedIndex = String(index).padStart(3, '0');
+      return `frames/ezgif-frame-${paddedIndex}.jpg`;
+    }
+
+    let cssWidth = window.innerWidth;
+    let cssHeight = window.innerHeight;
+    let dpr = window.devicePixelRatio || 1;
+
+    function resizeCanvas() {
+      cssWidth = window.innerWidth;
+      cssHeight = window.innerHeight;
+      dpr = window.devicePixelRatio || 1;
+
+      canvas.width = Math.floor(cssWidth * dpr);
+      canvas.height = Math.floor(cssHeight * dpr);
+      canvas.style.width = cssWidth + 'px';
+      canvas.style.height = cssHeight + 'px';
+
+      renderFrame(Math.round(currentFrameIndex));
+    }
+
+    function drawFrame(img) {
+      if (!img || !img.complete || img.naturalWidth === 0) return;
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const imgAspect = img.naturalWidth / img.naturalHeight;
+      const canvasAspect = cssWidth / cssHeight;
+
+      let drawWidth, drawHeight, offsetX, offsetY;
+
+      // OBJECT-FIT COVER ALGORITHM for mobile portrait & desktop
+      if (canvasAspect > imgAspect) {
+        drawWidth = cssWidth;
+        drawHeight = cssWidth / imgAspect;
+      } else {
+        drawHeight = cssHeight;
+        drawWidth = cssHeight * imgAspect;
+      }
+
+      offsetX = (cssWidth - drawWidth) / 2;
+      offsetY = (cssHeight - drawHeight) / 2;
+
+      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+    }
+
+    let targetFrameIndex = 0;
+    let currentFrameIndex = 0;
+    let lastRenderedIndex = -1;
+
+    function renderFrame(index) {
+      const safeIndex = Math.min(FRAME_COUNT - 1, Math.max(0, index));
+      if (images[safeIndex]) {
+        drawFrame(images[safeIndex]);
+        lastRenderedIndex = safeIndex;
+      }
+    }
+
+    function updateScrollProgress() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || (document.body ? document.body.scrollTop : 0) || 0;
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const scrollFraction = Math.min(1, Math.max(0, scrollTop / maxScroll));
+
+      targetFrameIndex = scrollFraction * (FRAME_COUNT - 1);
+    }
+
+    function animate() {
+      updateScrollProgress();
+
+      // Lerp smoothing
+      currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.15;
+
+      const roundedIndex = Math.round(currentFrameIndex);
+      if (roundedIndex !== lastRenderedIndex) {
+        renderFrame(roundedIndex);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function hideLoader() {
+      if (loader && !loader.classList.contains('hidden')) {
+        loader.classList.add('hidden');
+      }
+    }
+
+    function onFrameLoadOrError() {
+      loadedImagesCount++;
+      const progress = Math.min(100, (loadedImagesCount / FRAME_COUNT) * 100);
+      if (progressBar) progressBar.style.width = `${progress}%`;
+
+      if (loadedImagesCount === 1) {
+        renderFrame(0);
+      }
+
+      if (loadedImagesCount >= FRAME_COUNT) {
+        hideLoader();
+      }
+    }
+
+    function preloadImages() {
+      for (let i = 1; i <= FRAME_COUNT; i++) {
+        const img = new Image();
+        img.onload = onFrameLoadOrError;
+        img.onerror = onFrameLoadOrError;
+        img.src = currentFrameUrl(i);
+        images.push(img);
+      }
+
+      setTimeout(hideLoader, 2500);
+    }
+
+    // Active pill highlighting on scroll
+    const sections = document.querySelectorAll('.section');
+    const navPills = document.querySelectorAll('.nav-pill');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navPills.forEach(pill => {
+            if (pill.getAttribute('href') === `#${id}`) {
+              pill.classList.add('active');
+            } else {
+              pill.classList.remove('active');
+            }
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(section => observer.observe(section));
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+
+    resizeCanvas();
+    preloadImages();
+    requestAnimationFrame(animate);
+
+    // Smooth Lerp Custom Cursor Script
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (cursorDot) {
+        cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      }
+    }, { passive: true });
+
+    function updateCursorRing() {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+
+      if (cursorRing) {
+        cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      }
+
+      requestAnimationFrame(updateCursorRing);
+    }
+
+    requestAnimationFrame(updateCursorRing);
+
+    // Interactive Hover States
+    const interactiveElements = document.querySelectorAll('a, button, .project-card, .nav-pill, .logo-fixed, .service-chip, .pricing-card, .skill-badge, .social-item');
+
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        if (cursorRing) cursorRing.classList.add('hovered');
+      });
+      el.addEventListener('mouseleave', () => {
+        if (cursorRing) cursorRing.classList.remove('hovered');
+      });
+    });
+  </script>
+</body>
+
+</html>
