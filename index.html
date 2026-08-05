@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Alam - Portfolio 2026</title>
+  <title>Alam - Graphic Designer Portfolio 2026</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
@@ -14,8 +14,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700;800&family=Syne:wght@700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
     rel="stylesheet">
+
+  <!-- React 18, ReactDOM 18, and Babel Standalone for Seamless Client-Side React Rendering -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
     * {
@@ -58,7 +63,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.7) 100%);
+      background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.45) 100%);
       z-index: 2;
       pointer-events: none;
     }
@@ -85,9 +90,18 @@
       visibility: hidden;
     }
 
+    .loader-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 3px;
+      color: #ffffff;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
     .progress-bar-wrap {
-      width: clamp(160px, 40vw, 240px);
-      height: 3px;
+      width: clamp(180px, 40vw, 260px);
+      height: 4px;
       background: rgba(255, 255, 255, 0.15);
       border-radius: 4px;
       overflow: hidden;
@@ -96,8 +110,17 @@
     .progress-bar {
       width: 0%;
       height: 100%;
-      background: #d62828;
-      transition: width 0.1s linear;
+      background: linear-gradient(90deg, #d62828, #ff3344);
+      transition: width 0.15s ease-out;
+      box-shadow: 0 0 12px rgba(214, 40, 40, 0.8);
+    }
+
+    .loader-percentage {
+      margin-top: 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #9090a0;
+      letter-spacing: 1px;
     }
 
     /* Logo Fixed Top Left */
@@ -112,6 +135,7 @@
       cursor: pointer;
       background: rgba(10, 10, 16, 0.75);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       padding: 8px;
       border-radius: 50%;
       border: 1px solid rgba(255, 255, 255, 0.2);
@@ -134,9 +158,7 @@
       filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
     }
 
-
-
-    /* Scrollable Container covering 4 Sections */
+    /* Scrollable Container covering Sections */
     .scroll-container {
       position: relative;
       z-index: 10;
@@ -155,12 +177,12 @@
 
     /* Glassmorphic Panel Style */
     .glass-panel {
-      background: rgba(10, 10, 16, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(10, 10, 16, 0.28) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: clamp(16px, 3vw, 24px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
       width: 100%;
       max-width: 1100px;
       padding: clamp(20px, 4vw, 40px);
@@ -179,15 +201,39 @@
       width: 100%;
     }
 
+    @keyframes heroBorderGlow {
+      0% {
+        background-position: 0% 50%;
+        box-shadow: 0 10px 30px rgba(214, 40, 40, 0.5);
+      }
+
+      50% {
+        background-position: 100% 50%;
+        box-shadow: 0 15px 35px rgba(59, 130, 246, 0.5);
+      }
+
+      100% {
+        background-position: 0% 50%;
+        box-shadow: 0 10px 30px rgba(214, 40, 40, 0.5);
+      }
+    }
+
     .hero-avatar-pill {
-      background: #900c1e;
+      background: linear-gradient(135deg, #d62828, #ff3344, #3b82f6, #900c1e, #d62828);
+      background-size: 300% 300%;
+      animation: heroBorderGlow 4s ease infinite;
       border-radius: 48px 48px 20px 48px;
-      padding: 4px;
+      padding: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 25px rgba(144, 12, 30, 0.4);
       flex-shrink: 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hero-avatar-pill:hover {
+      transform: scale(1.04) translateY(-4px);
+      box-shadow: 0 18px 45px rgba(214, 40, 40, 0.75);
     }
 
     .hero-avatar-pill img {
@@ -254,6 +300,8 @@
       a,
       button,
       input,
+      textarea,
+      select,
       [role="button"] {
         cursor: none !important;
       }
@@ -352,6 +400,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
+      cursor: pointer;
     }
 
     .nav-pill.active {
@@ -457,23 +506,12 @@
       font-weight: 800;
       font-size: clamp(0.8rem, 2vw, 0.95rem);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .skill-badge:hover {
       transform: translateY(-3px);
-    }
-
-    .skill-pr {
-      background: #00005b;
-      color: #9999ff;
-      border: 1px solid #3333cc;
-    }
-
-    .skill-ae {
-      background: #1a0033;
-      color: #d980ff;
-      border: 1px solid #8800cc;
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
     }
 
     .skill-ps {
@@ -506,22 +544,22 @@
       border: 1px solid #cc3300;
     }
 
-    .skill-ms {
-      background: #001a33;
-      color: #3399ff;
-      border: 1px solid #0066cc;
-    }
-
-    .skill-genai {
-      background: linear-gradient(135deg, #2a004a, #5b0080);
-      color: #e066ff;
-      border: 1px solid #9933ff;
-    }
-
     .skill-fg {
       background: #1e1e1e;
       color: #a259ff;
       border: 1px solid #555566;
+    }
+
+    .skill-pr {
+      background: #000040;
+      color: #9999ff;
+      border: 1px solid #3333cc;
+    }
+
+    .skill-ae {
+      background: #1a0033;
+      color: #d999ff;
+      border: 1px solid #7700cc;
     }
 
     .info-two-col {
@@ -602,31 +640,32 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: rgba(15, 15, 25, 0.8);
       aspect-ratio: 3 / 4;
-      transition: transform 0.3s ease, border-color 0.3s ease;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
 
     .project-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-5px);
+      border-color: rgba(214, 40, 40, 0.6);
+      box-shadow: 0 12px 30px rgba(214, 40, 40, 0.3);
     }
 
     .project-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: scale 0.5s ease;
+      transition: transform 0.5s ease;
     }
 
     .project-card:hover img {
-      scale: 1.05;
+      transform: scale(1.06);
     }
 
     .project-card-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, transparent 65%);
-      padding: 14px;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 65%);
+      padding: 16px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -634,135 +673,145 @@
 
     .project-card-title {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(0.8rem, 2vw, 0.95rem);
+      font-size: clamp(0.85rem, 2vw, 1rem);
       font-weight: 700;
       color: #ffffff;
     }
 
     .project-card-sub {
-      font-size: 0.68rem;
-      color: #a0a0b0;
-    }
-
-    /* Section 4: Contact & Thank You */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(24px, 5vw, 40px);
-      align-items: center;
-      width: 100%;
-    }
-
-    .contact-left {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .contact-avatar-wrap {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .contact-avatar {
-      width: clamp(60px, 12vw, 80px);
-      height: clamp(60px, 12vw, 80px);
-      aspect-ratio: 1 / 1;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .contact-avatar-info h4 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-      font-weight: 700;
-    }
-
-    .contact-avatar-info p {
-      font-size: 0.75rem;
-      color: #808090;
-    }
-
-    .social-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .social-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 8px 14px;
-      border-radius: 10px;
-      text-decoration: none;
-      color: #ffffff;
-      font-size: clamp(0.75rem, 2vw, 0.85rem);
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-
-    .social-item:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .social-icon {
-      width: 22px;
-      height: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      font-size: 0.75rem;
-    }
-
-    .history-cards {
-      display: flex;
-      gap: 12px;
-      margin-top: 6px;
-    }
-
-    .history-card {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 10px;
       font-size: 0.7rem;
       color: #a0a0b0;
-      text-align: center;
+      margin-top: 2px;
     }
 
-    .contact-right {
+    /* Modal / Lightbox */
+    .lightbox-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .lightbox-modal {
+      position: relative;
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+      background: #0a0a10;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
+      align-items: center;
     }
 
-    .thankyou-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.5rem, 10vw, 6rem);
-      line-height: 0.9;
-      letter-spacing: 2px;
-      background: linear-gradient(180deg, #ffffff 0%, #707080 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .lightbox-modal img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      display: block;
     }
 
-    .thankyou-sub {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.5rem, 8vw, 4.5rem);
+    .lightbox-footer {
+      width: 100%;
+      padding: 14px 20px;
+      background: rgba(15, 15, 25, 0.95);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: #ffffff;
-      margin-top: 4px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10001;
+      transition: background 0.2s, transform 0.2s;
     }
 
-    /* Services & Pricing Section Styles */
+    .lightbox-close:hover {
+      background: #d62828;
+      transform: scale(1.1);
+    }
+
+    .lightbox-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10, 10, 20, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+      font-size: 1.8rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10001;
+      transition: all 0.2s ease;
+    }
+
+    .lightbox-nav-btn:hover {
+      background: #d62828;
+      border-color: #ffffff;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-prev {
+      left: 16px;
+    }
+
+    .nav-next {
+      right: 16px;
+    }
+
+    .lightbox-indicators {
+      position: absolute;
+      bottom: 12px;
+      display: flex;
+      gap: 6px;
+      z-index: 10001;
+    }
+
+    .indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .indicator-dot.active {
+      width: 24px;
+      border-radius: 10px;
+      background: #d62828;
+      box-shadow: 0 0 10px rgba(214, 40, 40, 0.6);
+    }
+
+    /* Section 4: Services & Pricing */
     .services-intro {
       font-size: clamp(0.82rem, 1.8vw, 0.92rem);
       color: #b0b0c0;
@@ -795,49 +844,62 @@
     }
 
     .service-chip {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.025) !important;
+      backdrop-filter: blur(6px) !important;
+      -webkit-backdrop-filter: blur(6px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
       border-radius: 8px;
       padding: 8px 14px;
       font-size: 0.78rem;
       font-weight: 600;
       color: #e0e0f0;
       letter-spacing: 0.5px;
-      transition: background 0.2s, border-color 0.2s;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .service-chip:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(214, 40, 40, 0.28) !important;
+      border-color: rgba(214, 40, 40, 0.8) !important;
+      color: #ffffff !important;
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 8px 20px rgba(214, 40, 40, 0.4);
     }
 
     .pricing-cards {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
+      width: 100%;
     }
 
     .pricing-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
       border-radius: 16px;
       padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
-      transition: transform 0.3s, border-color 0.3s;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .pricing-card.premium {
-      background: rgba(144, 12, 30, 0.28);
-      border-color: rgba(214, 40, 40, 0.5);
-      box-shadow: 0 10px 30px rgba(144, 12, 30, 0.3);
+      background: rgba(144, 12, 30, 0.15) !important;
+      border-color: rgba(214, 40, 40, 0.5) !important;
+      box-shadow: 0 10px 30px rgba(144, 12, 30, 0.25);
     }
 
     .pricing-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-5px);
+      border-color: rgba(214, 40, 40, 0.7) !important;
+      box-shadow: 0 12px 30px rgba(214, 40, 40, 0.4);
     }
 
     .pricing-badge {
@@ -899,8 +961,337 @@
       color: #ff3344;
     }
 
-    /* RESPONSIVE MEDIA QUERIES */
+    /* Section 5: Contact Person & Outro + NEW GLASSMORPHIC FORM */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(24px, 5vw, 40px);
+      align-items: start;
+      width: 100%;
+    }
 
+    .contact-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-person-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .contact-name-stretched {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.2rem, 8vw, 5rem);
+      letter-spacing: 8px;
+      line-height: 0.9;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, #ff6b81 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: scaleY(1.2);
+      margin: 0;
+    }
+
+    .contact-sub-age {
+      font-size: 0.75rem;
+      color: #a0a0c0;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-top: 6px;
+    }
+
+    .contact-avatar-centered-wrap {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin: 10px 0 16px 0;
+    }
+
+    .contact-avatar-centered {
+      width: clamp(150px, 26vw, 190px);
+      height: clamp(150px, 26vw, 190px);
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 6px solid #800a1a;
+      box-shadow: 0 12px 40px rgba(128, 10, 26, 0.7);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .contact-avatar-centered:hover {
+      transform: scale(1.05);
+      box-shadow: 0 16px 50px rgba(214, 40, 40, 0.85);
+    }
+
+    .social-list-stacked {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .social-item-stacked {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(30, 15, 30, 0.35) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      padding: 14px 20px;
+      border-radius: 16px;
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .social-item-stacked:hover {
+      background: rgba(214, 40, 40, 0.28) !important;
+      border-color: rgba(214, 40, 40, 0.7) !important;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(214, 40, 40, 0.4);
+    }
+
+    .social-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .social-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.025) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      padding: 10px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #ffffff;
+      font-size: clamp(0.75rem, 2vw, 0.85rem);
+      font-weight: 600;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .social-item:hover {
+      background: rgba(214, 40, 40, 0.25) !important;
+      border-color: rgba(214, 40, 40, 0.7) !important;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(214, 40, 40, 0.35);
+    }
+
+    .social-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      font-size: 0.85rem;
+    }
+
+    .history-cards {
+      display: flex;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .history-card {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.025) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.7rem;
+      color: #a0a0b0;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+
+    .history-card:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(214, 40, 40, 0.5) !important;
+    }
+
+    /* NEW Glassmorphic Contact Form */
+    .contact-form-box {
+      background: rgba(10, 10, 18, 0.25) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      border-radius: 18px;
+      padding: clamp(20px, 3.5vw, 30px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-header-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .form-header-sub {
+      font-size: 0.78rem;
+      color: #9090a5;
+      margin-bottom: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #c0c0d0;
+      text-transform: uppercase;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      background: rgba(5, 5, 12, 0.45) !important;
+      backdrop-filter: blur(6px) !important;
+      -webkit-backdrop-filter: blur(6px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: #808090;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: #d62828;
+      box-shadow: 0 0 15px rgba(214, 40, 40, 0.35);
+      background: rgba(10, 10, 18, 0.65) !important;
+    }
+
+    .service-select-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .service-btn-chip {
+      background: rgba(255, 255, 255, 0.035) !important;
+      backdrop-filter: blur(6px) !important;
+      -webkit-backdrop-filter: blur(6px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #a0a0b0;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .service-btn-chip:hover {
+      background: rgba(255, 255, 255, 0.12) !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      color: #ffffff !important;
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .service-btn-chip.selected {
+      background: #d62828 !important;
+      border-color: #ff3344 !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 15px rgba(214, 40, 40, 0.5);
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #d62828 0%, #900c1e 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 24px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      margin-top: 8px;
+      box-shadow: 0 8px 20px rgba(214, 40, 40, 0.35);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(214, 40, 40, 0.5);
+      background: linear-gradient(135deg, #e63946 0%, #a80d22 100%);
+    }
+
+    .form-success-banner {
+      background: rgba(0, 230, 107, 0.12);
+      border: 1px solid rgba(0, 230, 107, 0.4);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      color: #00e66b;
+      font-size: 0.85rem;
+      font-weight: 600;
+      animation: fadeIn 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* RESPONSIVE MEDIA QUERIES */
     @media (max-width: 1024px) {
       .project-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -988,32 +1379,8 @@
         gap: 32px;
       }
 
-      .contact-right {
-        align-items: center;
-        text-align: center;
-        width: 100%;
-      }
-
-      .thankyou-title {
-        font-size: clamp(2.8rem, 9vw, 4.8rem);
-        text-align: center;
-      }
-
-      .thankyou-sub {
-        font-size: clamp(2.2rem, 7vw, 3.5rem);
-        text-align: center;
-      }
-
-      .section-heading,
-      .recap-title {
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .pricing-cards {
+      .form-row {
         grid-template-columns: 1fr;
-        gap: 16px;
       }
     }
 
@@ -1021,15 +1388,6 @@
       .hero-title {
         font-size: clamp(1.75rem, 6.5vw, 2.5rem);
         justify-content: center;
-        text-align: center;
-      }
-
-      .hero-badges {
-        justify-content: center;
-      }
-
-      .thankyou-title {
-        font-size: clamp(2.2rem, 8vw, 3.5rem);
         text-align: center;
       }
 
@@ -1063,519 +1421,935 @@
 </head>
 
 <body>
+  <!-- React Mount Point -->
+  <div id="root"></div>
 
-  <!-- Smooth Custom Cursor Elements -->
-  <div class="custom-cursor-dot" id="cursorDot"></div>
-  <div class="custom-cursor-ring" id="cursorRing"></div>
+  <!-- React 18 Application Logic -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-  <!-- Canvas Background Animation -->
-  <canvas id="animationCanvas"></canvas>
-  <div class="bg-vignette"></div>
-
-  <!-- Loading Bar -->
-  <div class="loader" id="loader">
-    <div class="progress-bar-wrap">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-  </div>
-
-  <!-- Logo fixed top left -->
-  <div class="logo-fixed" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Md Tamanne Alam">
-    <img src="logo_white.png" alt="TD Logo">
-  </div>
-
-  <!-- Content Container with 4 Sections -->
-  <div class="scroll-container">
-
-    <!-- Section 1: Hero Cover -->
-    <section class="section" id="hero">
-      <div class="hero-content">
-        <div class="hero-avatar-pill">
-          <img src="avatar.png" alt="Md Tamanne Alam">
-        </div>
-        <div class="hero-text">
-          <h1 class="hero-title">GRAPHIC DESIGNER <span>PORTFOLIO 2026</span></h1>
-          <div class="hero-badges" style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <div class="hero-badge">
-              <div class="hero-badge-square"></div>
-              GRAPHIC DESIGNER
-            </div>
-            <div class="hero-badge">
-              <div class="hero-badge-square"></div>
-              VIDEO EDITOR
-            </div>
-          </div>
-          <div class="hero-menu">
-            <a href="#profil">START</a>
-            <a href="#project">OPTIONS</a>
-            <a href="#contact">EXIT</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 2: Profile & About Me -->
-    <section class="section" id="profil">
-      <div class="nav-pills">
-        <a href="#profil" class="nav-pill active">PROFIL</a>
-        <a href="#project" class="nav-pill">PROJECT</a>
-        <a href="#services" class="nav-pill">SERVICES</a>
-        <a href="#contact" class="nav-pill">CONTACT PERSON</a>
-      </div>
-
-      <div class="glass-panel">
-        <div class="profile-grid">
-
-          <div class="profile-left">
-            <span class="profile-left-tag">HELLO, I AM</span>
-            <h3 class="profile-name">MD TAMANNE ALAM</h3>
-            <div class="profile-image-frame">
-              <img src="avatar.png" alt="Md Tamanne Alam">
-            </div>
-          </div>
-
-          <div class="profile-right">
-            <h2 class="section-heading">ABOUT ME</h2>
-            <p class="about-text">
-              HI, I'M MD TAMANNE ALAM. I HAVE 3 YEARS OF EXPERIENCE IN THE GRAPHIC DESIGN FIELD. I LEARNED A LOT OF
-              THINGS FROM EDITING, GRAPHIC DESIGN, VIDEO, TYPOGRAPHY, BRANDING, AND VISUAL CREATIVE DESIGN.
-            </p>
-
-            <div>
-              <h3 class="skills-header">SOFTWARE SKILLS</h3>
-              <div class="skills-icons">
-                <div class="skill-badge skill-ps" title="Adobe Photoshop">Ps</div>
-                <div class="skill-badge skill-ai" title="Adobe Illustrator">Ai</div>
-                <div class="skill-badge skill-cd" title="CorelDRAW">Cd</div>
-                <div class="skill-badge skill-id" title="Adobe InDesign">Id</div>
-                <div class="skill-badge skill-pp" title="MS PPT">Pp</div>
-                <div class="skill-badge skill-fg" title="Figma">Fg</div>
-              </div>
-            </div>
-
-            <div class="info-two-col">
-              <div class="info-box">
-                <div class="info-box-title">EDUCATION</div>
-                <div class="info-box-desc">
-                  ● 2020 - 2023<br>
-                  - GRAPHIC DESIGN & FINE ARTS<br>
-                  Visual Communication Science
-                </div>
-              </div>
-
-              <div class="info-box">
-                <div class="info-box-title">EXPERIENCE</div>
-                <div class="info-box-desc">
-                  GRAPHIC DESIGNER (3+ YEARS)<br>
-                  Brand Identity, Posters, Video Editing<br>
-                  Creative Content & Typography
-                </div>
-              </div>
-            </div>
-
-            <div class="language-section">
-              <div class="info-box-title">LANGUAGE (COMMUNICATION)</div>
-              <div class="lang-item">
-                <span>HINDI</span>
-                <span>100%</span>
-              </div>
-              <div class="lang-item">
-                <span>ENGLISH</span>
-                <span>85%</span>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 3: Recap Project 2026 -->
-    <section class="section" id="project">
-      <div class="nav-pills">
-        <a href="#profil" class="nav-pill">PROFIL</a>
-        <a href="#project" class="nav-pill active">PROJECT</a>
-        <a href="#services" class="nav-pill">SERVICES</a>
-        <a href="#contact" class="nav-pill">CONTACT PERSON</a>
-      </div>
-
-      <div class="glass-panel">
-        <div class="recap-header">
-          <h2 class="recap-title">RECAP PROJECT 2026</h2>
-          <span class="recap-tag">NO AI</span>
-        </div>
-
-        <div class="project-grid">
-          <div class="project-card">
-            <img src="poster1.png" alt="Creative Graphic Poster">
-            <div class="project-card-overlay">
-              <div class="project-card-title">Graphic Poster Design</div>
-              <div class="project-card-sub">Typography & Editing</div>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <img src="poster2.png" alt="Venom Edit Poster">
-            <div class="project-card-overlay">
-              <div class="project-card-title">Venom Movie Edit</div>
-              <div class="project-card-sub">Cinematic Title Art</div>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <img src="poster3.png" alt="Illustration Poster">
-            <div class="project-card-overlay">
-              <div class="project-card-title">Character Illustration</div>
-              <div class="project-card-sub">Visual Art</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 4: Freelance Services & Pricing -->
-    <section class="section" id="services">
-      <div class="nav-pills">
-        <a href="#profil" class="nav-pill">PROFIL</a>
-        <a href="#project" class="nav-pill">PROJECT</a>
-        <a href="#services" class="nav-pill active">SERVICES</a>
-        <a href="#contact" class="nav-pill">CONTACT PERSON</a>
-      </div>
-
-      <div class="glass-panel">
-        <div class="recap-header">
-          <h2 class="recap-title">FREELANCE SERVICES</h2>
-          <span class="recap-tag">CREATIVE GRAPHIC DESIGN</span>
-        </div>
-
-        <p class="services-intro">
-          Helping brands and businesses create clean, modern, and impactful designs that leave a lasting impression.
-        </p>
-
-        <div class="services-grid">
-          <div>
-            <h3 class="services-list-title">SERVICES OFFERED</h3>
-            <div class="services-chips">
-              <div class="service-chip">Brand Identity</div>
-              <div class="service-chip">Logo Design</div>
-              <div class="service-chip">Social Media Graphics</div>
-              <div class="service-chip">Packaging Design</div>
-              <div class="service-chip">Banner & Poster</div>
-              <div class="service-chip">Flyer & Brochure</div>
-              <div class="service-chip">Business Cards</div>
-              <div class="service-chip">Presentation Design</div>
-              <div class="service-chip">Print Design</div>
-              <div class="service-chip">Photo Retouching</div>
-              <div class="service-chip">Photo Collage</div>
-              <div class="service-chip">AI to Print Ready File</div>
-            </div>
-          </div>
-
-          <div>
-            <h3 class="services-list-title">PRICING PLANS</h3>
-            <div class="pricing-cards">
-              <div class="pricing-card">
-                <div class="pricing-header">
-                  <h4>STANDARD</h4>
-                  <div class="pricing-price">STARTING AT $25</div>
-                </div>
-                <p class="pricing-desc">Perfect for startups and small businesses.</p>
-                <ul class="pricing-features">
-                  <li>1 Custom Design</li>
-                  <li>High-Resolution Files</li>
-                  <li>2 Revisions</li>
-                  <li>Commercial Use</li>
-                  <li>3–4 Day Delivery</li>
-                </ul>
-              </div>
-
-              <div class="pricing-card premium">
-                <div class="pricing-badge">POPULAR</div>
-                <div class="pricing-header">
-                  <h4>PREMIUM</h4>
-                  <div class="pricing-price">STARTING AT $75</div>
-                </div>
-                <p class="pricing-desc">Best for brands needing premium design support.</p>
-                <ul class="pricing-features">
-                  <li>Up to 3 Custom Designs</li>
-                  <li>Source Files (AI/PSD)</li>
-                  <li>Unlimited Revisions</li>
-                  <li>Priority Support</li>
-                  <li>Commercial Use</li>
-                  <li>48–60 Hour Delivery</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 5: Contact Person & Outro -->
-    <section class="section" id="contact">
-      <div class="nav-pills">
-        <a href="#profil" class="nav-pill">PROFIL</a>
-        <a href="#project" class="nav-pill">PROJECT</a>
-        <a href="#services" class="nav-pill">SERVICES</a>
-        <a href="#contact" class="nav-pill active">CONTACT PERSON</a>
-      </div>
-
-      <div class="glass-panel">
-        <div class="contact-grid">
-
-          <div class="contact-left">
-            <h2 class="section-heading">CONTACT ME</h2>
-
-            <div class="contact-avatar-wrap">
-              <img src="avatar.png" alt="Md Tamanne Alam" class="contact-avatar">
-              <div class="contact-avatar-info">
-                <h4>MD TAMANNE ALAM</h4>
-                <p>23 Y.O</p>
-              </div>
-            </div>
-
-            <div class="social-list">
-              <a href="tel:+918207533522" class="social-item">
-                <span class="social-icon">📞</span>
-                <span>+91 8207533522</span>
-              </a>
-              <a href="mailto:mdtamannealam@gmail.com" class="social-item">
-                <span class="social-icon">✉️</span>
-                <span>mdtamannealam@gmail.com</span>
-              </a>
-              <a href="https://www.instagram.com/coding_td?igsh=a3RhdzhzMzFkOHgx" target="_blank"
-                rel="noopener noreferrer" class="social-item">
-                <span class="social-icon">📷</span>
-                <span>@coding_td (Instagram)</span>
-              </a>
-              <a href="https://www.linkedin.com/in/mdtamannealam" target="_blank" rel="noopener noreferrer"
-                class="social-item">
-                <span class="social-icon">💼</span>
-                <span>Md Tamanne Alam (LinkedIn)</span>
-              </a>
-            </div>
-
-            <div class="history-cards">
-              <div class="history-card">PORTOFOLIO 2023</div>
-              <div class="history-card">DESIGN PORTFOLIO 2024</div>
-            </div>
-          </div>
-
-          <div class="contact-right">
-            <h1 class="thankyou-title">THANK YOU</h1>
-            <h2 class="thankyou-sub">FOR YOUR VISIT!</h2>
-          </div>
-
-        </div>
-
-        <!-- Footer / Copyright Notice -->
-        <div
-          style="margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; font-size: 0.78rem; color: #808090; letter-spacing: 1.5px; text-transform: uppercase;">
-          © 2026 <strong style="color: #ffffff;">MD TAMANNE ALAM</strong>. ALL RIGHTS RESERVED.
-        </div>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- Background Frame Animation Script -->
-  <script>
     const FRAME_COUNT = 240;
-    const canvas = document.getElementById('animationCanvas');
-    const ctx = canvas.getContext('2d');
-    const loader = document.getElementById('loader');
-    const progressBar = document.getElementById('progressBar');
 
-    const images = [];
-    let loadedImagesCount = 0;
-
-    function currentFrameUrl(index) {
+    // Helper to format frame URLs
+    function getFrameUrl(index) {
       const paddedIndex = String(index).padStart(3, '0');
       return `ezgif-frame-${paddedIndex}.jpg`;
     }
 
-    let cssWidth = window.innerWidth;
-    let cssHeight = window.innerHeight;
-    let dpr = window.devicePixelRatio || 1;
+    // 1. Custom Smooth Lerp Cursor Component
+    function CustomCursor() {
+      const dotRef = useRef(null);
+      const ringRef = useRef(null);
 
-    function resizeCanvas() {
-      cssWidth = window.innerWidth;
-      cssHeight = window.innerHeight;
-      dpr = window.devicePixelRatio || 1;
+      useEffect(() => {
+        let mouseX = -100;
+        let mouseY = -100;
+        let ringX = -100;
+        let ringY = -100;
+        let animationFrameId;
 
-      canvas.width = Math.floor(cssWidth * dpr);
-      canvas.height = Math.floor(cssHeight * dpr);
-      canvas.style.width = cssWidth + 'px';
-      canvas.style.height = cssHeight + 'px';
+        const onMouseMove = (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          if (dotRef.current) {
+            dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+          }
+        };
 
-      renderFrame(Math.round(currentFrameIndex));
+        const updateRing = () => {
+          ringX += (mouseX - ringX) * 0.22; // High-speed responsive lerp
+          ringY += (mouseY - ringY) * 0.22;
+          if (ringRef.current) {
+            ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+          }
+          animationFrameId = requestAnimationFrame(updateRing);
+        };
+
+        window.addEventListener('mousemove', onMouseMove, { passive: true });
+        animationFrameId = requestAnimationFrame(updateRing);
+
+        // Hover handlers for interactive elements
+        const handleMouseEnter = () => ringRef.current && ringRef.current.classList.add('hovered');
+        const handleMouseLeave = () => ringRef.current && ringRef.current.classList.remove('hovered');
+
+        const selectors = 'a, button, .project-card, .nav-pill, .logo-fixed, .service-chip, .pricing-card, .skill-badge, .social-item, .service-btn-chip, .btn-submit';
+        const interactiveElements = document.querySelectorAll(selectors);
+
+        interactiveElements.forEach(el => {
+          el.addEventListener('mouseenter', handleMouseEnter);
+          el.addEventListener('mouseleave', handleMouseLeave);
+        });
+
+        return () => {
+          window.removeEventListener('mousemove', onMouseMove);
+          cancelAnimationFrame(animationFrameId);
+          interactiveElements.forEach(el => {
+            el.removeEventListener('mouseenter', handleMouseEnter);
+            el.removeEventListener('mouseleave', handleMouseLeave);
+          });
+        };
+      }, []);
+
+      return (
+        <React.Fragment>
+          <div className="custom-cursor-dot" ref={dotRef}></div>
+          <div className="custom-cursor-ring" ref={ringRef}></div>
+        </React.Fragment>
+      );
     }
 
-    function drawFrame(img) {
-      if (!img || !img.complete || img.naturalWidth === 0) return;
+    // 2. High-Performance Canvas Scroll Engine Component
+    function CanvasBackground({ onProgress, onLoaded }) {
+      const canvasRef = useRef(null);
+      const imagesRef = useRef([]);
 
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let animationFrameId;
 
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        let cssWidth = window.innerWidth;
+        let cssHeight = window.innerHeight;
+        let dpr = window.devicePixelRatio || 1;
 
-      const imgAspect = img.naturalWidth / img.naturalHeight;
-      const canvasAspect = cssWidth / cssHeight;
+        let targetFrameIndex = 0;
+        let currentFrameIndex = 0;
+        let lastRenderedIndex = -1;
 
-      let drawWidth, drawHeight, offsetX, offsetY;
+        function resizeCanvas() {
+          cssWidth = window.innerWidth;
+          cssHeight = window.innerHeight;
+          dpr = window.devicePixelRatio || 1;
 
-      // OBJECT-FIT COVER ALGORITHM for mobile portrait & desktop
-      if (canvasAspect > imgAspect) {
-        drawWidth = cssWidth;
-        drawHeight = cssWidth / imgAspect;
-      } else {
-        drawHeight = cssHeight;
-        drawWidth = cssHeight * imgAspect;
+          canvas.width = Math.floor(cssWidth * dpr);
+          canvas.height = Math.floor(cssHeight * dpr);
+          canvas.style.width = cssWidth + 'px';
+          canvas.style.height = cssHeight + 'px';
+
+          renderFrame(Math.round(currentFrameIndex));
+        }
+
+        function drawFrame(img) {
+          if (!img || !img.complete || img.naturalWidth === 0) return;
+
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+          const imgAspect = img.naturalWidth / img.naturalHeight;
+          const canvasAspect = cssWidth / cssHeight;
+
+          let drawWidth, drawHeight, offsetX, offsetY;
+
+          if (canvasAspect > imgAspect) {
+            drawWidth = cssWidth;
+            drawHeight = cssWidth / imgAspect;
+          } else {
+            drawHeight = cssHeight;
+            drawWidth = cssHeight * imgAspect;
+          }
+
+          offsetX = (cssWidth - drawWidth) / 2;
+          offsetY = (cssHeight - drawHeight) / 2;
+
+          ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        function renderFrame(index) {
+          const safeIndex = Math.min(FRAME_COUNT - 1, Math.max(0, index));
+          if (imagesRef.current[safeIndex]) {
+            drawFrame(imagesRef.current[safeIndex]);
+            lastRenderedIndex = safeIndex;
+          }
+        }
+
+        function updateScrollProgress() {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+          const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+          const scrollFraction = Math.min(1, Math.max(0, scrollTop / maxScroll));
+
+          targetFrameIndex = scrollFraction * (FRAME_COUNT - 1);
+        }
+
+        function animate() {
+          updateScrollProgress();
+
+          // Optimized smooth lerp factor (0.22 for fast, liquid response)
+          currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.22;
+
+          const roundedIndex = Math.round(currentFrameIndex);
+          if (roundedIndex !== lastRenderedIndex) {
+            renderFrame(roundedIndex);
+          }
+
+          animationFrameId = requestAnimationFrame(animate);
+        }
+
+        // Image Preloading Engine
+        let loadedCount = 0;
+        const images = [];
+
+        function onFrameLoaded() {
+          loadedCount++;
+          const percentage = Math.min(100, Math.round((loadedCount / FRAME_COUNT) * 100));
+          if (onProgress) onProgress(percentage);
+
+          if (loadedCount === 1) {
+            renderFrame(0);
+          }
+
+          if (loadedCount >= FRAME_COUNT) {
+            if (onLoaded) onLoaded();
+          }
+        }
+
+        for (let i = 1; i <= FRAME_COUNT; i++) {
+          const img = new Image();
+          img.onload = onFrameLoaded;
+          img.onerror = onFrameLoaded;
+          img.src = getFrameUrl(i);
+          images.push(img);
+        }
+
+        imagesRef.current = images;
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
+
+        resizeCanvas();
+        animationFrameId = requestAnimationFrame(animate);
+
+        // Fallback loader dismiss
+        const fallbackTimer = setTimeout(() => {
+          if (onLoaded) onLoaded();
+        }, 2200);
+
+        return () => {
+          window.removeEventListener('resize', resizeCanvas);
+          window.removeEventListener('scroll', updateScrollProgress);
+          cancelAnimationFrame(animationFrameId);
+          clearTimeout(fallbackTimer);
+        };
+      }, []);
+
+      return (
+        <React.Fragment>
+          <canvas id="animationCanvas" ref={canvasRef}></canvas>
+          <div className="bg-vignette"></div>
+        </React.Fragment>
+      );
+    }
+
+    // 3. Fixed Navigation Pills Component
+    function NavPills({ activeSection, scrollTo }) {
+      const navItems = [
+        { id: 'profil', label: 'PROFIL' },
+        { id: 'project', label: 'PROJECT' },
+        { id: 'services', label: 'SERVICES' },
+        { id: 'contact', label: 'CONTACT PERSON' }
+      ];
+
+      return (
+        <div className="nav-pills">
+          {navItems.map(item => (
+            <a
+              key={item.id}
+              onClick={(e) => { e.preventDefault(); scrollTo(item.id); }}
+              className={`nav-pill ${activeSection === item.id ? 'active' : ''}`}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      );
+    }
+
+    // 4. Hero Section Component
+    function HeroSection({ scrollTo }) {
+      return (
+        <section className="section" id="hero">
+          <div className="hero-content">
+            <div className="hero-avatar-pill">
+              <img src="avatar.png" alt="Alam" />
+            </div>
+            <div className="hero-text">
+              <h1 className="hero-title">
+                GRAPHIC DESIGNER <span>PORTFOLIO 2026</span>
+              </h1>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <div className="hero-badge">
+                  <div className="hero-badge-square"></div>
+                  GRAPHIC DESIGNER
+                </div>
+                <div className="hero-badge">
+                  <div className="hero-badge-square"></div>
+                  VIDEO EDITOR
+                </div>
+              </div>
+              <div className="hero-menu">
+                <a onClick={(e) => { e.preventDefault(); scrollTo('profil'); }}>START</a>
+                <a onClick={(e) => { e.preventDefault(); scrollTo('project'); }}>OPTIONS</a>
+                <a onClick={(e) => { e.preventDefault(); scrollTo('contact'); }}>EXIT</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // 5. Profile & About Me Component
+    function ProfileSection({ activeSection, scrollTo }) {
+      return (
+        <section className="section" id="profil">
+          <NavPills activeSection={activeSection} scrollTo={scrollTo} />
+
+          <div className="glass-panel">
+            <div className="profile-grid">
+              <div className="profile-left">
+                <span className="profile-left-tag">HELLO, I AM</span>
+                <h3 className="profile-name">ALAM</h3>
+                <div className="profile-image-frame">
+                  <img src="avatar.png" alt="Alam" />
+                </div>
+              </div>
+
+              <div className="profile-right">
+                <h2 className="section-heading">ABOUT ME</h2>
+                <p className="about-text">
+                  HI, I'M ALAM. I HAVE 3 YEARS OF EXPERIENCE IN THE GRAPHIC DESIGN FIELD. I LEARNED A LOT OF
+                  THINGS FROM EDITING, GRAPHIC DESIGN, VIDEO, TYPOGRAPHY, BRANDING, AND VISUAL CREATIVE DESIGN.
+                </p>
+
+                <div>
+                  <h3 className="skills-header">SOFTWARE SKILLS</h3>
+                  <div className="skills-icons">
+                    <div className="skill-badge skill-ps" title="Adobe Photoshop">Ps</div>
+                    <div className="skill-badge skill-ai" title="Adobe Illustrator">Ai</div>
+                    <div className="skill-badge skill-pr" title="Adobe Premiere Pro">Pr</div>
+                    <div className="skill-badge skill-ae" title="Adobe After Effects">Ae</div>
+                    <div className="skill-badge skill-cd" title="CorelDRAW">Cd</div>
+                    <div className="skill-badge skill-id" title="Adobe InDesign">Id</div>
+                    <div className="skill-badge skill-pp" title="MS PPT">Pp</div>
+                    <div className="skill-badge skill-fg" title="Figma">Fg</div>
+                  </div>
+                </div>
+
+                <div className="info-two-col">
+                  <div className="info-box">
+                    <div className="info-box-title">EDUCATION</div>
+                    <div className="info-box-desc">
+                      ● 2020 - 2023<br />
+                      - GRAPHIC DESIGN & FINE ARTS<br />
+                      Visual Communication Science
+                    </div>
+                  </div>
+
+                  <div className="info-box">
+                    <div className="info-box-title">EXPERIENCE</div>
+                    <div className="info-box-desc">
+                      GRAPHIC DESIGNER (3+ YEARS)<br />
+                      Brand Identity, Posters, Video Editing<br />
+                      Creative Content & Typography
+                    </div>
+                  </div>
+                </div>
+
+                <div className="language-section">
+                  <div className="info-box-title">LANGUAGE (COMMUNICATION)</div>
+                  <div className="lang-item">
+                    <span>HINDI</span>
+                    <span>100%</span>
+                  </div>
+                  <div className="lang-item">
+                    <span>ENGLISH</span>
+                    <span>85%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    const FALLBACK_SVGS = [
+      `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%230a0a14"/><stop offset="50%" stop-color="%232b0812"/><stop offset="100%" stop-color="%23800a1a"/></linearGradient><linearGradient id="txt1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="%23ffffff"/><stop offset="100%" stop-color="%23ff4d6d"/></linearGradient></defs><rect width="600" height="800" fill="url(%23bg1)"/><circle cx="300" cy="350" r="180" fill="none" stroke="%23ff3344" stroke-width="4" opacity="0.6"/><circle cx="300" cy="350" r="140" fill="none" stroke="%233b82f6" stroke-width="2" opacity="0.4"/><text x="300" y="240" font-family="sans-serif" font-size="64" font-weight="bold" fill="url(%23txt1)" text-anchor="middle" letter-spacing="6">GRAPHIC</text><text x="300" y="320" font-family="sans-serif" font-size="64" font-weight="bold" fill="url(%23txt1)" text-anchor="middle" letter-spacing="6">POSTER</text><text x="300" y="400" font-family="sans-serif" font-size="64" font-weight="bold" fill="url(%23txt1)" text-anchor="middle" letter-spacing="6">DESIGN</text><rect x="150" y="460" width="300" height="3" fill="%23d62828"/><text x="300" y="520" font-family="sans-serif" font-size="20" font-weight="bold" fill="%23ffffff" text-anchor="middle" letter-spacing="4">ALAM PORTFOLIO 2026</text><text x="300" y="560" font-family="sans-serif" font-size="14" fill="%23a0a0c0" text-anchor="middle" letter-spacing="2">CREATIVE VISUAL ART %26 TYPOGRAPHY</text></svg>`,
+      `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800"><defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%230f0c20"/><stop offset="50%" stop-color="%231a0933"/><stop offset="100%" stop-color="%230a0a14"/></linearGradient><linearGradient id="box" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23d62828"/><stop offset="100%" stop-color="%23500510"/></linearGradient></defs><rect width="600" height="800" fill="url(%23bg2)"/><g transform="translate(150,220)"><polygon points="150,0 300,75 150,150 0,75" fill="%23ff4d6d" opacity="0.8"/><polygon points="0,75 150,150 150,320 0,245" fill="url(%23box)"/><polygon points="300,75 150,150 150,320 300,245" fill="%233a0008"/><text x="75" y="210" font-family="sans-serif" font-size="24" font-weight="bold" fill="%23ffffff" text-anchor="middle" transform="rotate(-25 75 210)">PACKAGING</text></g><text x="300" y="620" font-family="sans-serif" font-size="44" font-weight="bold" fill="%23ffffff" text-anchor="middle" letter-spacing="4">LUXURY PACKAGING</text><text x="300" y="660" font-family="sans-serif" font-size="14" fill="%23a0a0c0" text-anchor="middle" letter-spacing="2">BOX, LABEL %26 3D MOCKUP DESIGN</text></svg>`,
+      `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800"><defs><linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%2305050a"/><stop offset="50%" stop-color="%2318081a"/><stop offset="100%" stop-color="%2305050a"/></linearGradient><linearGradient id="card1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%231e1e2d"/><stop offset="100%" stop-color="%230d0d16"/></linearGradient></defs><rect width="600" height="800" fill="url(%23bg3)"/><g transform="translate(140, 220) rotate(-10)"><rect width="320" height="190" rx="16" fill="url(%23card1)" stroke="%23d62828" stroke-width="2"/><text x="160" y="90" font-family="sans-serif" font-size="32" font-weight="bold" fill="%23ffffff" text-anchor="middle" letter-spacing="3">ALAM</text><text x="160" y="120" font-family="sans-serif" font-size="12" fill="%23d62828" text-anchor="middle" letter-spacing="2">BRANDING %26 LOGO</text></g><g transform="translate(180, 320) rotate(8)"><rect width="320" height="190" rx="16" fill="%23d62828" stroke="%23ffffff" stroke-width="1.5"/><text x="160" y="105" font-family="sans-serif" font-size="32" font-weight="bold" fill="%23ffffff" text-anchor="middle" letter-spacing="4">BUSINESS CARDS</text></g><text x="300" y="650" font-family="sans-serif" font-size="40" font-weight="bold" fill="%23ffffff" text-anchor="middle" letter-spacing="4">BRAND IDENTITY</text><text x="300" y="690" font-family="sans-serif" font-size="14" fill="%23a0a0c0" text-anchor="middle" letter-spacing="2">BUSINESS CARD, LOGO %26 BRANDING</text></svg>`
+    ];
+
+    // 6. Project Recap Component with Lightbox Modal
+    function ProjectSection({ activeSection, scrollTo, onOpenModal }) {
+      const projects = [
+        {
+          id: 1,
+          img: 'poster1.jpg',
+          images: ['poster1.jpg', 'poster2.jpg', 'poster3.jpg'],
+          title: 'Graphic Poster Design',
+          sub: 'Multiple Natural Posters'
+        },
+        {
+          id: 2,
+          img: 'poster2.jpg',
+          images: ['poster2.jpg', 'poster1.jpg', 'poster3.jpg'],
+          title: 'Packaging Design',
+          sub: 'Box, Label & Mockup Design'
+        },
+        {
+          id: 3,
+          img: 'poster3.jpg',
+          images: ['poster3.jpg', 'logo_white.png', 'poster1.jpg', 'poster2.jpg'],
+          title: 'Business Card, Logo & Branding',
+          sub: 'Identity, Business Cards & Logos'
+        }
+      ];
+
+      return (
+        <section className="section" id="project">
+          <NavPills activeSection={activeSection} scrollTo={scrollTo} />
+
+          <div className="glass-panel">
+            <div className="recap-header">
+              <h2 className="recap-title">RECAP PROJECT 2026</h2>
+              <span className="recap-tag">GRAPHIC DESIGN</span>
+            </div>
+
+            <div className="project-grid">
+              {projects.map((proj, idx) => (
+                <div
+                  key={proj.id}
+                  className="project-card"
+                  onClick={() => onOpenModal(proj)}
+                >
+                  <img
+                    src={proj.img}
+                    alt={proj.title}
+                    onError={(e) => { e.target.onerror = null; e.target.src = FALLBACK_SVGS[idx % FALLBACK_SVGS.length]; }}
+                  />
+                  <div className="project-card-overlay">
+                    <div className="project-card-title">{proj.title}</div>
+                    <div className="project-card-sub">{proj.sub}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // 7. Services & Pricing Component
+    function ServicesSection({ activeSection, scrollTo }) {
+      const services = [
+        'Brand Identity', 'Logo Design', 'Social Media Graphics', 'Motion Graphics & Video Editing',
+        'Packaging Design', 'Banner & Poster Design', 'Flyer & Brochure', 'Business Cards',
+        'Presentation & Pitch Deck', 'Print Design', 'Photo Retouching & Editing', '3D Product Mockup',
+        'YouTube Thumbnail Art', 'Typography & Visual Art', 'Vector Art & Illustration', 'AI to Print Ready File'
+      ];
+
+      return (
+        <section className="section" id="services">
+          <NavPills activeSection={activeSection} scrollTo={scrollTo} />
+
+          <div className="glass-panel">
+            <div className="recap-header">
+              <h2 className="recap-title">FREELANCE SERVICES</h2>
+              <span className="recap-tag">CREATIVE GRAPHIC DESIGN</span>
+            </div>
+
+            <p className="services-intro">
+              Helping brands and businesses create clean, modern, and impactful designs that leave a lasting impression.
+            </p>
+
+            <div className="services-grid">
+              <div>
+                <h3 className="services-list-title">SERVICES OFFERED</h3>
+                <div className="services-chips">
+                  {services.map((svc, i) => (
+                    <div key={i} className="service-chip">
+                      <span>✨</span> {svc}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="services-list-title">PRICING PLANS</h3>
+                <div className="pricing-cards">
+                  <div className="pricing-card">
+                    <div className="pricing-header">
+                      <h4>STANDARD</h4>
+                      <div className="pricing-price">STARTING AT $25</div>
+                    </div>
+                    <p className="pricing-desc">Perfect for startups and small businesses.</p>
+                    <ul className="pricing-features">
+                      <li>1 Custom Design</li>
+                      <li>High-Resolution Files</li>
+                      <li>2 Revisions</li>
+                      <li>Commercial Use</li>
+                      <li>3–4 Day Delivery</li>
+                    </ul>
+                  </div>
+
+                  <div className="pricing-card premium">
+                    <div className="pricing-badge">POPULAR</div>
+                    <div className="pricing-header">
+                      <h4>PREMIUM</h4>
+                      <div className="pricing-price">STARTING AT $75</div>
+                    </div>
+                    <p className="pricing-desc">Best for brands needing premium design support.</p>
+                    <ul className="pricing-features">
+                      <li>Up to 3 Custom Designs</li>
+                      <li>Source Files (AI/PSD)</li>
+                      <li>Unlimited Revisions</li>
+                      <li>Priority Support</li>
+                      <li>Commercial Use</li>
+                      <li>48–60 Hour Delivery</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // 8. NEW Interactive Glassmorphic Contact Form Component
+    function ContactForm() {
+      const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+        budget: '$25 - $75'
+      });
+
+      const [selectedServices, setSelectedServices] = useState([]);
+      const [isSubmitting, setIsSubmitting] = useState(false);
+      const [submitted, setSubmitted] = useState(false);
+
+      const availableServices = [
+        'Logo Design', 'Brand Identity', 'Poster / Banner', 'Motion Graphics / Video Editing',
+        'Social Media Graphics', 'Packaging Design', 'Flyer / Brochure', 'Business Cards',
+        'Presentation Design', 'Photo Retouching', '3D Product Mockup', 'Thumbnail Design'
+      ];
+
+      const toggleService = (service) => {
+        if (selectedServices.includes(service)) {
+          setSelectedServices(selectedServices.filter(s => s !== service));
+        } else {
+          setSelectedServices([...selectedServices, service]);
+        }
+      };
+
+      const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+      };
+
+      const sendWhatsApp = () => {
+        const text = `Hi Alam,\n\nI would like to start a project with you:\n\n👤 Name: ${formData.name || 'Not specified'}\n✉️ Email: ${formData.email || 'Not specified'}\n📞 Phone: ${formData.phone || 'Not specified'}\n🎨 Services: ${selectedServices.length ? selectedServices.join(', ') : 'Custom Scope'}\n💰 Budget: ${formData.budget}\n📝 Details: ${formData.message || 'None'}`;
+        const url = `https://wa.me/919217518630?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+      };
+
+      const sendMailto = (e) => {
+        if (e) e.preventDefault();
+        const subject = encodeURIComponent(`Project Inquiry from ${formData.name || 'Client'}`);
+        const body = encodeURIComponent(`Hi Alam,\n\nName: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nServices Needed: ${selectedServices.length ? selectedServices.join(', ') : 'Custom Scope'}\nBudget: ${formData.budget}\n\nProject Details:\n${formData.message}`);
+        window.location.href = `mailto:mdtamannealam04@gmail.com?subject=${subject}&body=${body}`;
+        setSubmitted(true);
+      };
+
+      const handleEmailSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        try {
+          const payload = new FormData();
+          payload.append('name', formData.name);
+          payload.append('email', formData.email);
+          payload.append('phone', formData.phone || 'N/A');
+          payload.append('budget', formData.budget);
+          payload.append('services', selectedServices.length ? selectedServices.join(', ') : 'Custom Scope');
+          payload.append('message', formData.message);
+          payload.append('_subject', `New Project Inquiry from ${formData.name || 'Client'}`);
+          payload.append('_template', 'table');
+          payload.append('_captcha', 'false');
+
+          await fetch('https://formsubmit.co/ajax/mdtamannealam04@gmail.com', {
+            method: 'POST',
+            body: payload
+          });
+
+          setIsSubmitting(false);
+          setSubmitted(true);
+        } catch (err) {
+          sendMailto();
+          setIsSubmitting(false);
+        }
+      };
+
+      if (submitted) {
+        return (
+          <div className="contact-form-box">
+            <div className="form-success-banner">
+              <span style={{ fontSize: '1.8rem' }}>🎉</span>
+              <strong style={{ fontSize: '1.1rem', color: '#ffffff' }}>INQUIRY SENT!</strong>
+              <p style={{ color: '#d0d0e0', fontSize: '0.78rem', lineHeight: '1.4' }}>
+                Thank you <strong>{formData.name || 'Friend'}</strong>! Your message has been dispatched.
+              </p>
+              <div style={{ background: 'rgba(255, 255, 255, 0.05)', borderRadius: '8px', padding: '10px', marginTop: '6px', textAlign: 'left', fontSize: '0.72rem', color: '#a0a0c0' }}>
+                💡 <strong>Important Note for Email Delivery:</strong><br />
+                If this is your first time using FormSubmit, check your Gmail inbox (or Spam folder) for FormSubmit's <strong>1-click activation link</strong> to authorize instant inbox delivery!
+              </div>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
+                <button
+                  className="btn-submit"
+                  style={{ flex: 1, background: '#25D366', fontSize: '0.85rem', padding: '10px 12px' }}
+                  onClick={sendWhatsApp}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffffff" style={{ verticalAlign: 'middle' }}><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 001.333 4.993L2 22l5.233-1.237a9.96 9.96 0 004.779 1.22h.005c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.038-5.176-2.925-7.062A9.925 9.925 0 0012.012 2zm5.835 14.155c-.247.695-1.436 1.332-1.975 1.393-.501.056-1.144.08-3.344-.816-2.813-1.145-4.606-4.004-4.747-4.19-.139-.187-1.145-1.527-1.145-2.913 0-1.386.724-2.068.981-2.353.256-.285.559-.356.746-.356.187 0 .373.003.535.011.171.008.4.003.585.45.187.447.639 1.558.694 1.67.056.112.093.243.019.392-.075.149-.112.242-.224.373-.112.131-.235.293-.336.393-.112.112-.229.234-.098.458.131.224.582.96 1.252 1.558.862.768 1.589 1.006 1.813 1.118.224.112.356.094.486-.056.131-.149.56-.653.709-.877.149-.224.298-.187.504-.112.205.075 1.306.616 1.53.728.224.112.373.168.429.261.056.093.056.541-.191 1.236z" /></svg>
+                  <span>CHAT ON WHATSAPP</span>
+                </button>
+                <button
+                  className="btn-submit"
+                  style={{ flex: 1, background: '#3b82f6', fontSize: '0.85rem', padding: '10px 12px' }}
+                  onClick={sendMailto}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffffff" style={{ verticalAlign: 'middle' }}><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" /></svg>
+                  <span>OPEN EMAIL APP</span>
+                </button>
+                <button
+                  className="btn-submit"
+                  style={{ width: '100%', background: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)', fontSize: '0.82rem', padding: '8px 12px' }}
+                  onClick={() => {
+                    setSubmitted(false);
+                    setFormData({ name: '', email: '', phone: '', message: '', budget: '$25 - $75' });
+                  }}
+                >
+                  SEND ANOTHER MESSAGE
+                </button>
+              </div>
+            </div>
+          </div>
+        );
       }
 
-      offsetX = (cssWidth - drawWidth) / 2;
-      offsetY = (cssHeight - drawHeight) / 2;
+      return (
+        <form className="contact-form-box" onSubmit={handleEmailSubmit}>
+          <div>
+            <h3 className="form-header-title">START A PROJECT</h3>
+            <p className="form-header-sub">Got an exciting project or idea? Send an inquiry or chat directly on WhatsApp!</p>
+          </div>
 
-      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">YOUR NAME *</label>
+              <input
+                type="text"
+                name="name"
+                required
+                placeholder="John Doe"
+                className="form-input"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">YOUR EMAIL *</label>
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="john@example.com"
+                className="form-input"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">PHONE / WHATSAPP</label>
+              <input
+                type="tel"
+                name="phone"
+                placeholder="+91 92175 18630"
+                className="form-input"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">ESTIMATED BUDGET</label>
+              <select
+                name="budget"
+                className="form-input"
+                value={formData.budget}
+                onChange={handleChange}
+              >
+                <option value="$25 - $75">$25 - $75 (Standard)</option>
+                <option value="$75 - $200">$75 - $200 (Premium)</option>
+                <option value="$200+">$200+ (Custom Scope)</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">SERVICES NEEDED</label>
+            <div className="service-select-chips">
+              {availableServices.map(svc => (
+                <button
+                  type="button"
+                  key={svc}
+                  className={`service-btn-chip ${selectedServices.includes(svc) ? 'selected' : ''}`}
+                  onClick={() => toggleService(svc)}
+                >
+                  {selectedServices.includes(svc) ? '✓ ' : '+ '}{svc}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">PROJECT DETAILS / MESSAGE *</label>
+            <textarea
+              name="message"
+              required
+              rows="3"
+              placeholder="Tell me about your brand, deadlines, or design requirements..."
+              className="form-textarea"
+              value={formData.message}
+              onChange={handleChange}
+            ></textarea>
+          </div>
+
+          <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
+            <button type="submit" className="btn-submit" style={{ flex: 1, fontSize: '0.95rem', gap: '8px' }} disabled={isSubmitting}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffffff"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" /></svg>
+              <span>{isSubmitting ? 'SENDING...' : 'SEND EMAIL'}</span>
+            </button>
+            <button
+              type="button"
+              className="btn-submit"
+              style={{ flex: 1, fontSize: '0.95rem', background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)', boxShadow: '0 8px 20px rgba(37, 211, 102, 0.35)', gap: '8px' }}
+              onClick={sendWhatsApp}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffffff"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 001.333 4.993L2 22l5.233-1.237a9.96 9.96 0 004.779 1.22h.005c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.038-5.176-2.925-7.062A9.925 9.925 0 0012.012 2zm5.835 14.155c-.247.695-1.436 1.332-1.975 1.393-.501.056-1.144.08-3.344-.816-2.813-1.145-4.606-4.004-4.747-4.19-.139-.187-1.145-1.527-1.145-2.913 0-1.386.724-2.068.981-2.353.256-.285.559-.356.746-.356.187 0 .373.003.535.011.171.008.4.003.585.45.187.447.639 1.558.694 1.67.056.112.093.243.019.392-.075.149-.112.242-.224.373-.112.131-.235.293-.336.393-.112.112-.229.234-.098.458.131.224.582.96 1.252 1.558.862.768 1.589 1.006 1.813 1.118.224.112.356.094.486-.056.131-.149.56-.653.709-.877.149-.224.298-.187.504-.112.205.075 1.306.616 1.53.728.224.112.373.168.429.261.056.093.056.541-.191 1.236z" /></svg>
+              <span>SEND WHATSAPP</span>
+            </button>
+            <button
+              type="button"
+              className="btn-submit"
+              style={{ flex: '1 1 100%', fontSize: '0.85rem', background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.18)', boxShadow: 'none', gap: '8px' }}
+              onClick={sendMailto}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffffff"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" /></svg>
+              <span>DIRECT MAIL CLIENT (GMAIL / OUTLOOK)</span>
+            </button>
+          </div>
+        </form>
+      );
     }
 
-    let targetFrameIndex = 0;
-    let currentFrameIndex = 0;
-    let lastRenderedIndex = -1;
+    // 9. Contact Person Section Component
+    function ContactSection({ activeSection, scrollTo }) {
+      return (
+        <section className="section" id="contact">
+          <NavPills activeSection={activeSection} scrollTo={scrollTo} />
 
-    function renderFrame(index) {
-      const safeIndex = Math.min(FRAME_COUNT - 1, Math.max(0, index));
-      if (images[safeIndex]) {
-        drawFrame(images[safeIndex]);
-        lastRenderedIndex = safeIndex;
-      }
+          <div className="glass-panel">
+            <div className="contact-grid">
+              <div className="contact-left">
+                <h2 className="section-heading">CONTACT ME</h2>
+
+                <div className="contact-person-center">
+                  <h4 className="contact-name-stretched">ALAM</h4>
+                  <p className="contact-sub-age">23 Y.O</p>
+                </div>
+
+                <div className="contact-avatar-centered-wrap">
+                  <img src="avatar.png" alt="Alam" className="contact-avatar-centered" />
+                </div>
+
+                <div className="social-list-stacked">
+                  <a href="https://wa.me/919217518630" target="_blank" rel="noopener noreferrer" className="social-item-stacked">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 001.333 4.993L2 22l5.233-1.237a9.96 9.96 0 004.779 1.22h.005c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.038-5.176-2.925-7.062A9.925 9.925 0 0012.012 2zm5.835 14.155c-.247.695-1.436 1.332-1.975 1.393-.501.056-1.144.08-3.344-.816-2.813-1.145-4.606-4.004-4.747-4.19-.139-.187-1.145-1.527-1.145-2.913 0-1.386.724-2.068.981-2.353.256-.285.559-.356.746-.356.187 0 .373.003.535.011.171.008.4.003.585.45.187.447.639 1.558.694 1.67.056.112.093.243.019.392-.075.149-.112.242-.224.373-.112.131-.235.293-.336.393-.112.112-.229.234-.098.458.131.224.582.96 1.252 1.558.862.768 1.589 1.006 1.813 1.118.224.112.356.094.486-.056.131-.149.56-.653.709-.877.149-.224.298-.187.504-.112.205.075 1.306.616 1.53.728.224.112.373.168.429.261.056.093.056.541-.191 1.236z" /></svg>
+                    <span>WhatsApp</span>
+                  </a>
+                  <a href="https://www.instagram.com/coding_td?igsh=a3RhdzhzMzFkOHgx" target="_blank" rel="noopener noreferrer" className="social-item-stacked">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#e1306c"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
+                    <span>Instagram</span>
+                  </a>
+                  <a href="https://www.linkedin.com/in/mdtamannealam" target="_blank" rel="noopener noreferrer" className="social-item-stacked">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#0a66c2"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" /></svg>
+                    <span>Linkedin</span>
+                  </a>
+                  <a href="mailto:mdtamannealam04@gmail.com" className="social-item-stacked">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#3b82f6"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" /></svg>
+                    <span>Email</span>
+                  </a>
+                </div>
+
+                <div className="history-cards">
+                  <div className="history-card">PORTOFOLIO 2023</div>
+                  <div className="history-card">DESIGN PORTFOLIO 2024</div>
+                </div>
+              </div>
+
+              <div className="contact-right">
+                <ContactForm />
+              </div>
+            </div>
+
+            {/* Footer / Copyright */}
+            <div style={{ marginTop: '36px', paddingTop: '20px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', textAlign: 'center', fontSize: '0.78rem', color: '#808090', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+              © 2026 <strong style={{ color: '#ffffff' }}>ALAM</strong>. ALL RIGHTS RESERVED.
+            </div>
+          </div>
+        </section>
+      );
     }
 
-    function updateScrollProgress() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || (document.body ? document.body.scrollTop : 0) || 0;
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const scrollFraction = Math.min(1, Math.max(0, scrollTop / maxScroll));
+    // 10. Lightbox Modal Component with Multi-Image Gallery Support
+    function LightboxModal({ modalItem, onClose }) {
+      const images = modalItem.images && modalItem.images.length > 0 ? modalItem.images : [modalItem.img];
+      const [currentIndex, setCurrentIndex] = useState(0);
 
-      targetFrameIndex = scrollFraction * (FRAME_COUNT - 1);
+      const nextImg = (e) => {
+        if (e) e.stopPropagation();
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+      };
+
+      const prevImg = (e) => {
+        if (e) e.stopPropagation();
+        setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+      };
+
+      return (
+        <div className="lightbox-backdrop" onClick={onClose}>
+          <div className="lightbox-modal" onClick={e => e.stopPropagation()}>
+            <button className="lightbox-close" onClick={onClose}>✕</button>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '280px' }}>
+              <img
+                src={images[currentIndex]}
+                alt={modalItem.title}
+                onError={(e) => { e.target.onerror = null; e.target.src = 'poster1.jpg'; }}
+              />
+
+              {images.length > 1 && (
+                <React.Fragment>
+                  <button className="lightbox-nav-btn nav-prev" onClick={prevImg} title="Previous image">‹</button>
+                  <button className="lightbox-nav-btn nav-next" onClick={nextImg} title="Next image">›</button>
+                  <div className="lightbox-indicators">
+                    {images.map((_, idx) => (
+                      <span
+                        key={idx}
+                        className={`indicator-dot ${idx === currentIndex ? 'active' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); setCurrentIndex(idx); }}
+                      />
+                    ))}
+                  </div>
+                </React.Fragment>
+              )}
+            </div>
+
+            <div className="lightbox-footer">
+              <div>
+                <h3 style={{ fontFamily: 'Syne', fontSize: '1.1rem', color: '#ffffff' }}>{modalItem.title}</h3>
+                <p style={{ fontSize: '0.75rem', color: '#9090a0' }}>
+                  {modalItem.sub} {images.length > 1 ? `(${currentIndex + 1} of ${images.length})` : ''}
+                </p>
+              </div>
+              <span style={{ fontSize: '0.7rem', background: '#d62828', padding: '4px 10px', borderRadius: '4px', fontWeight: '700' }}>2026 EDITION</span>
+            </div>
+          </div>
+        </div>
+      );
     }
 
-    function animate() {
-      updateScrollProgress();
+    // Main React Application Component
+    function App() {
+      const [loading, setLoading] = useState(true);
+      const [progress, setProgress] = useState(0);
+      const [activeSection, setActiveSection] = useState('profil');
+      const [modalItem, setModalItem] = useState(null);
 
-      // Lerp smoothing
-      currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.15;
+      const scrollTo = useCallback((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, []);
 
-      const roundedIndex = Math.round(currentFrameIndex);
-      if (roundedIndex !== lastRenderedIndex) {
-        renderFrame(roundedIndex);
-      }
+      // Active Section Observer on Scroll
+      useEffect(() => {
+        const sectionIds = ['profil', 'project', 'services', 'contact'];
+        const elements = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
 
-      requestAnimationFrame(animate);
-    }
-
-    function hideLoader() {
-      if (loader && !loader.classList.contains('hidden')) {
-        loader.classList.add('hidden');
-      }
-    }
-
-    function onFrameLoadOrError() {
-      loadedImagesCount++;
-      const progress = Math.min(100, (loadedImagesCount / FRAME_COUNT) * 100);
-      if (progressBar) progressBar.style.width = `${progress}%`;
-
-      if (loadedImagesCount === 1) {
-        renderFrame(0);
-      }
-
-      if (loadedImagesCount >= FRAME_COUNT) {
-        hideLoader();
-      }
-    }
-
-    function preloadImages() {
-      for (let i = 1; i <= FRAME_COUNT; i++) {
-        const img = new Image();
-        img.onload = onFrameLoadOrError;
-        img.onerror = onFrameLoadOrError;
-        img.src = currentFrameUrl(i);
-        images.push(img);
-      }
-
-      setTimeout(hideLoader, 2500);
-    }
-
-    // Active pill highlighting on scroll
-    const sections = document.querySelectorAll('.section');
-    const navPills = document.querySelectorAll('.nav-pill');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navPills.forEach(pill => {
-            if (pill.getAttribute('href') === `#${id}`) {
-              pill.classList.add('active');
-            } else {
-              pill.classList.remove('active');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              setActiveSection(entry.target.id);
             }
           });
-        }
-      });
-    }, { threshold: 0.3 });
+        }, { threshold: 0.3 });
 
-    sections.forEach(section => observer.observe(section));
+        elements.forEach(el => observer.observe(el));
 
-    window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+        return () => observer.disconnect();
+      }, []);
 
-    resizeCanvas();
-    preloadImages();
-    requestAnimationFrame(animate);
+      return (
+        <React.Fragment>
+          {/* Custom Cursor */}
+          <CustomCursor />
 
-    // Smooth Lerp Custom Cursor Script
-    const cursorDot = document.getElementById('cursorDot');
-    const cursorRing = document.getElementById('cursorRing');
+          {/* Canvas Smooth Frame Sequence Engine */}
+          <CanvasBackground
+            onProgress={setProgress}
+            onLoaded={() => setLoading(false)}
+          />
 
-    let mouseX = -100;
-    let mouseY = -100;
-    let ringX = -100;
-    let ringY = -100;
+          {/* Loader Overlay */}
+          <div className={`loader ${!loading ? 'hidden' : ''}`}>
+            <div className="loader-title">LOADING PORTFOLIO</div>
+            <div className="progress-bar-wrap">
+              <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+            </div>
+            <div className="loader-percentage">{progress}%</div>
+          </div>
 
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+          {/* Fixed Logo Top Left */}
+          <div className="logo-fixed" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} title="Alam">
+            <img src="logo_white.png" alt="TD Logo" />
+          </div>
 
-      if (cursorDot) {
-        cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-      }
-    }, { passive: true });
+          {/* Scrollable Main Content */}
+          <div className="scroll-container">
+            <HeroSection scrollTo={scrollTo} />
+            <ProfileSection activeSection={activeSection} scrollTo={scrollTo} />
+            <ProjectSection activeSection={activeSection} scrollTo={scrollTo} onOpenModal={setModalItem} />
+            <ServicesSection activeSection={activeSection} scrollTo={scrollTo} />
+            <ContactSection activeSection={activeSection} scrollTo={scrollTo} />
+          </div>
 
-    function updateCursorRing() {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-
-      if (cursorRing) {
-        cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
-      }
-
-      requestAnimationFrame(updateCursorRing);
+          {/* Poster Image Lightbox Modal with Multi-Image Support */}
+          {modalItem && (
+            <LightboxModal modalItem={modalItem} onClose={() => setModalItem(null)} />
+          )}
+        </React.Fragment>
+      );
     }
 
-    requestAnimationFrame(updateCursorRing);
-
-    // Interactive Hover States
-    const interactiveElements = document.querySelectorAll('a, button, .project-card, .nav-pill, .logo-fixed, .service-chip, .pricing-card, .skill-badge, .social-item');
-
-    interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        if (cursorRing) cursorRing.classList.add('hovered');
-      });
-      el.addEventListener('mouseleave', () => {
-        if (cursorRing) cursorRing.classList.remove('hovered');
-      });
-    });
+    const rootElement = document.getElementById('root');
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<App />);
   </script>
 </body>
 
